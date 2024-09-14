@@ -1,0 +1,60 @@
+.toolbarContainer{
+    @apply flex absolute gap-4 justify-center items-center border rounded-3xl p-3 opacity-80;
+}
+
+.toolbarContainerLight{
+    border-color: theme('colors.border');
+    background-color: theme('colors.background');
+    color: theme('colors.text')
+
+ }
+ 
+ .toolbarContainerDark{
+     border-color: theme('colors.borderDark');
+     background-color: theme('colors.backgroundDark');
+     color: theme('colors.textDark')
+
+  }
+
+.toolbarContainerHorizontal{
+    @apply top-2 left-1/2 -translate-x-1/2;
+
+}
+
+.toolbarContainerVertical{
+    @apply flex-col right-2 top-1/2 -translate-y-1/2;
+}
+
+.iconwrapper {
+    @apply cursor-pointer p-3 flex justify-center items-center rounded-full box-border;
+    border: 2px solid transparent;
+    transition: border-color 0.3s;
+  }
+  
+  .iconwrapper:hover {
+    border-color: theme('colors.border'); 
+  }
+
+
+  .tooltipHorizontal{
+    @apply absolute top-16 border rounded-3xl p-2
+  }
+
+  .tooltipVertical{
+    @apply absolute right-16 border rounded-3xl p-2
+  }
+
+
+  .tooltipLight{
+    
+    border-color: theme('colors.border');
+    background-color: theme('colors.background');
+    color: theme('colors.text')
+ }
+ 
+ .tooltipDark{
+     border-color: theme('colors.borderDark');
+     background-color: theme('colors.backgroundDark');
+     color: theme('colors.textDark')
+
+  }
