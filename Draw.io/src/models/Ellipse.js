@@ -2,8 +2,8 @@ import Entity from "./entity";
 import ENTITYTYPE from './EnittyType';
 
 class Ellipse extends Entity {
-    constructor(strokeStyle,strokeColor, strokeWidth, fillStyle, fillColor, center, radiusX, radiusY,opacity) {
-      super(strokeStyle,strokeColor, strokeWidth, fillStyle, fillColor,opacity);
+    constructor(strokeStyle,strokeColor, strokeWidth, fillStyle, fillColor, center, radiusX, radiusY,opacity,id,hovered,selected) {
+      super(strokeStyle,strokeColor, strokeWidth, fillStyle, fillColor,opacity,id,hovered,selected);
       this.center = center;
       this.radiusX = radiusX;
       this.radiusY = radiusY;
@@ -25,6 +25,7 @@ class Ellipse extends Entity {
         context.fill();
       }
       context.stroke();
+      this.drawExtent(context);
       context.restore();
     }
 
@@ -50,9 +51,19 @@ class Ellipse extends Entity {
           data.radiusX,
           data.radiusY,
           data.opacity,
+          data.id,
+          data.hovered,
+          data.selected
         );
       }
       throw new Error('Unsupported type for deserialization');
+    }
+
+    isPointAbove(mouseX, mouseY, tolerance = 10) {
+      const dx = (mouseX - this.center.x) / this.radiusX;
+      const dy = (mouseY - this.center.y) / this.radiusY;
+      const distToCenter = Math.sqrt(dx * dx + dy * dy);
+      return Math.abs(distToCenter - 1) <= tolerance / Math.min(this.radiusX, this.radiusY);
     }
   }
   

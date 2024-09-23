@@ -2,19 +2,19 @@ import Entity from "./entity";
 import ENTITYTYPE from './EnittyType';
 
 class Text extends Entity {
-    constructor(strokeStyle, strokeColor, strokeWidth, fillStyle, fillColor, text, position, font = '16px Arial', align = 'left', baseline = 'alphabetic') {
-      super(strokeStyle, strokeColor, strokeWidth, fillStyle, fillColor);
+    constructor(strokeStyle, strokeColor, strokeWidth, fillStyle, fillColor, text, position, font = '16px Arial', align = 'left', baseline = 'alphabetic',id,hovered,selected) {
+      super(strokeStyle, strokeColor, strokeWidth, fillStyle, fillColor,id,hovered,selected);
       this.text = text;
-      this.position = position; // { x, y }
+      this.position = position;
       this.font = font;  // e.g., "16px Arial"
       this.align = align; // 'left', 'right', 'center', etc.
       this.baseline = baseline; // 'top', 'bottom', 'middle', etc.
-      this.calculateExtent(); // Update extents when the object is created
+      this.calculateExtent(); 
     }
   
     // Calculate extent for text
     calculateExtent() {
-      const context = document.createElement('canvas').getContext('2d'); // Temporary context for measuring text
+      const context = document.createElement('canvas').getContext('2d');
       context.font = this.font;
       const textMetrics = context.measureText(this.text);
   
@@ -55,6 +55,7 @@ class Text extends Entity {
       }
   
       context.strokeText(this.text, this.position.x, this.position.y);
+      this.drawExtent(context);
       context.restore();
     }
 
@@ -88,6 +89,9 @@ class Text extends Entity {
           data.textAlign,
           data.textBaseline,
           data.opacity,
+          data.id,
+          data.hovered,
+          data.selected
         );
       }
       throw new Error('Unsupported type for deserialization');

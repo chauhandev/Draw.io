@@ -1,3 +1,10 @@
+import Circle from "../models/Circle";
+import Ellipse from "../models/Ellipse";
+import ENTITYTYPE from "../models/EnittyType";
+import Line from "../models/Line";
+import Path from "../models/Path";
+import Rectangle from "../models/Rectangle";
+
 function createObject(command, event) {
   console.log(
     strokeColorRef.current,
@@ -103,4 +110,114 @@ function createObject(command, event) {
   }
 
   return entity; // Return the entity for further use if needed
+}
+
+export const isPointInside= (entity,mouseX,mouseY)=>{
+  let isPointIntersect = false;
+  switch (entity.type) {
+    case ENTITYTYPE.CIRCLE:
+      isPointIntersect = Circle.deserialize(entity).isPointInside(mouseX,mouseY);
+      break;
+    case ENTITYTYPE.LINE:
+      isPointIntersect = Line.deserialize(entity).isPointInside(mouseX,mouseY);
+      break;
+    case ENTITYTYPE.RECTANGLE:
+      isPointIntersect = Rectangle.deserialize(entity).isPointInside(mouseX,mouseY);
+      break;
+    case ENTITYTYPE.ELLIPSE:
+      isPointIntersect = Ellipse.deserialize(entity).isPointInside(mouseX,mouseY);
+      break;
+    case ENTITYTYPE.TEXT:
+      isPointIntersect = Text.deserialize(entity).isPointInside(mouseX,mouseY);
+      break;
+    default:
+      break;
+  }
+  return isPointIntersect;
+}
+
+
+export const isPointAbove = (entity, mouseX, mouseY) => {
+  let isAbove = false;
+  switch (entity.type) {
+    case ENTITYTYPE.CIRCLE:
+      isAbove = Circle.deserialize(entity).isPointAbove(mouseX, mouseY);
+      break;
+    case ENTITYTYPE.LINE:
+      isAbove = Line.deserialize(entity).isPointAbove(mouseX, mouseY);
+      break;
+    case ENTITYTYPE.RECTANGLE:
+      isAbove = Rectangle.deserialize(entity).isPointAbove(mouseX, mouseY);
+      break;
+    case ENTITYTYPE.ELLIPSE:
+      isAbove = Ellipse.deserialize(entity).isPointAbove(mouseX, mouseY);
+      break;
+    case ENTITYTYPE.PATH:
+      isAbove = Path.deserialize(entity).isPointAbove(mouseX, mouseY);
+      break;
+    default:
+      break;
+  }
+  return isAbove;
+};
+
+
+export const getDrawingExtents = (entities)=>{
+  if(entities.length <= 0)
+    return { 
+               min: { x: 0, y: 0 },
+               max: { x: 0, y: 0 }
+           }
+           
+  let minPoint = {x:Number.MAX_VALUE,y:Number.MAX_VALUE};
+  let maxPoint = {x:Number.MIN_VALUE,y:Number.MIN_VALUE};
+  entities.forEach(ent => {
+      minPoint.x = Math.min(minPoint.x,ent.extents.min.x);
+      minPoint.y = Math.min(minPoint.y, ent.extents.min.y);
+      maxPoint.x = Math.max(maxPoint.x, ent.extents.max.x);
+      maxPoint.y = Math.max(maxPoint.y, ent.extents.max.y);
+   
+  });
+
+  return {
+    min:minPoint,
+    max:maxPoint
+  }
+}
+
+
+
+// Method to check if two extents intersect
+export function isExtentIntersecting(extent1, extent2) {
+  // Check if one extent is to the left of the other or above the other
+  if (
+    extent1.max.x < extent2.min.x ||  
+    extent1.min.x > extent2.max.x || 
+    extent1.max.y < extent2.min.y || 
+    extent1.min.y > extent2.max.y     
+  ) {
+    return false; 
+  }
+  return true;
+}
+
+// Method to check if extent1 is completely inside extent2
+export function isExtentInside(extent1, extent2) {
+  return (
+    extent1.min.x >= extent2.min.x && extent1.max.x <= extent2.max.x && 
+    extent1.min.y >= extent2.min.y && extent1.max.y <= extent2.max.y    
+  );
+}
+
+export function correctExtent(extent) {
+  const { min, max } = extent;
+
+  if (max.x < min.x) {
+      [min.x, max.x] = [max.x, min.x]; 
+  }
+
+  if (max.y < min.y) {
+      [min.y, max.y] = [max.y, min.y];
+  }
+  return { min, max }; 
 }

@@ -2,8 +2,8 @@ import Entity from "./entity";
 import ENTITYTYPE from './EnittyType';
 
 class Rectangle extends Entity {
-    constructor(strokeStyle,strokeColor, strokeWidth, fillStyle, fillColor, position, width, height ,opacity) {
-      super(strokeStyle, strokeColor, strokeWidth, fillStyle, fillColor,opacity);
+    constructor(strokeStyle,strokeColor, strokeWidth, fillStyle, fillColor, position, width, height ,opacity,id,hovered,selected) {
+      super(strokeStyle, strokeColor, strokeWidth, fillStyle, fillColor,opacity,id,hovered,selected);
       this.position = position;
       this.width = width;
       this.height = height;
@@ -13,6 +13,16 @@ class Rectangle extends Entity {
     calculateExtent() {
         this.extents.min = { x: this.position.x, y: this.position.y };
         this.extents.max = { x: this.position.x + this.width, y: this.position.y + this.height };
+        if(this.extents.max.x< this.extents.min.x){
+          const temp = this.extents.min.x;
+          this.extents.min.x = this.extents.max.x;
+          this.extents.max.x = temp;
+        }
+        if(this.extents.max.y< this.extents.min.y){
+          const temp = this.extents.min.y;
+          this.extents.min.y = this.extents.max.y;
+          this.extents.max.y = temp;
+        }
       }
  
     // Draw rectangle
@@ -26,6 +36,7 @@ class Rectangle extends Entity {
         context.fill();
       }
       context.stroke();
+      this.drawExtent(context);
       context.restore();
     }
 
@@ -58,10 +69,28 @@ class Rectangle extends Entity {
           data.width,
           data.height,
           data.opacity,
+          data.id,
+          data.hovered,
+          data.selected
         );
       }
       throw new Error('Unsupported type for deserialization');
     }
+
+    isPointInside(mouseX, mouseY) {
+      return mouseX >= this.position.x && mouseX <= this.position.x + this.width &&
+             mouseY >= this.position.y && mouseY <= this.position.y + this.height;
+    }
+
+    isPointAbove(mouseX, mouseY, tolerance = 10) {
+      const isAboveLeftEdge = Math.abs(mouseX - this.extents.min.x) <= tolerance && mouseY >= this.extents.min.y && mouseY <= this.extents.max.y;
+      const isAboveRightEdge = Math.abs(mouseX - (this.extents.max.x)) <= tolerance && mouseY >= this.extents.min.y && mouseY <= this.extents.max.y;
+      const isAboveTopEdge = Math.abs(mouseY - this.extents.min.y) <= tolerance && mouseX >= this.extents.min.x &&  mouseX <= this.extents.max.x;
+      const isAboveBottomEdge = Math.abs(mouseY - (this.extents.max.y)) <= tolerance && mouseX >= this.extents.min.x && mouseX <= this.extents.max.x;
+  
+      return isAboveLeftEdge || isAboveRightEdge || isAboveTopEdge || isAboveBottomEdge;
+    }
+  
   }
   
   export default Rectangle;

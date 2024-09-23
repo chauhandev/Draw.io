@@ -3,8 +3,8 @@ import Entity from "./entity";
 import ENTITYTYPE from './EnittyType';
 
 class Line extends Entity {
-    constructor(strokeStyle,strokeColor, strokeWidth,fillStyle,fillColor, start, end,opacity) {
-      super(strokeStyle, strokeColor, strokeWidth, fillStyle, fillColor,opacity);
+    constructor(strokeStyle,strokeColor, strokeWidth,fillStyle,fillColor, start, end,opacity,id,hovered, selected) {
+      super(strokeStyle, strokeColor, strokeWidth, fillStyle, fillColor,opacity,id,hovered,selected);
       this.start = start;
       this.end = end;
       this.calculateExtent();
@@ -28,6 +28,8 @@ class Line extends Entity {
       context.moveTo(this.start.x, this.start.y);
       context.lineTo(this.end.x, this.end.y);
       context.stroke();
+      this.drawExtent(context);
+      context.restore();
     }
 
     transformBy(matrix) {
@@ -56,11 +58,36 @@ class Line extends Entity {
           data.start,
           data.end,
           data.opacity,
+          data.id,
+          data.hovered,
+          data.selected
         );
       }
       throw new Error('Unsupported type for deserialization');
     }
-  
+    
+    isPointAbove(mouseX, mouseY, tolerance = 10) {
+      // Helper function to calculate distance between two points (x1, y1) and (x2, y2)
+      const calculateDistance = (x1, y1, x2, y2) => {
+        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+      };
+    
+      // Calculate the distance between the start and end points
+      const lineDistance = calculateDistance(this.start.x, this.start.y, this.end.x, this.end.y);
+    
+      // Calculate the distance between the mouse point and the start point
+      const distanceToStart = calculateDistance(mouseX, mouseY, this.start.x, this.start.y);
+    
+      // Calculate the distance between the mouse point and the end point
+      const distanceToEnd = calculateDistance(mouseX, mouseY, this.end.x, this.end.y);
+    
+      // Check if the sum of the distances is approximately equal to the line distance within tolerance
+      const totalDistance = distanceToStart + distanceToEnd;
+      
+      // Return true if the total distance is close to the line distance within the specified tolerance
+      return Math.abs(totalDistance - lineDistance) <= tolerance;
+    }
+    
   }
   
   export default Line;

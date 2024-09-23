@@ -5,7 +5,12 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      cursor: {
+        'pencil': 'url("/assets/cursors/pencil.svg"), pointer',
+        'eraser': 'url("/assets/cursors/eraser.svg"), pointer'
+      },
+    },
     colors:{
       background: '#ffff',
       backgroundDark: '#000',

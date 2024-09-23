@@ -40,7 +40,7 @@ export class AddElementCommand {
     execute(command) {
       command.execute();
       this.undoStack.push(command);
-      this.redoStack = []; // Clear redo stack when a new command is executed
+      this.redoStack = []; 
     }
   
     undo() {

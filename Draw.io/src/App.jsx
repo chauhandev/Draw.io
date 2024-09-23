@@ -9,14 +9,13 @@ function App() {
     { icon: 'rotateRight', CommandName: COMMANDS.REDO, isActionButton : true },
     { icon: 'pen', CommandName: COMMANDS.FREEHAND , isActionButton : false},
     { icon: 'eraser', CommandName:  COMMANDS.ERASER, isActionButton : false },
-    { icon: 'circle', CommandName:  COMMANDS.LINE , isActionButton : false},
+    { icon: 'line', CommandName:  COMMANDS.LINE , isActionButton : false},
     { icon: 'circle', CommandName:  COMMANDS.CIRCLE , isActionButton : false},
     { icon: 'rectangle', CommandName:  COMMANDS.RECTANGLE , isActionButton : false},
     { icon: 'ellipse', CommandName:  COMMANDS.ELLIPSE , isActionButton : false},
     { icon: 'text', CommandName:  COMMANDS.TEXT , isActionButton : false},
     { icon: 'download', CommandName:  COMMANDS.DOWNLOAD , isActionButton : true},
   ];
-
   const zoomPanitems = [
     { icon: 'zoomIn', CommandName: COMMANDS.ZOOMIN , isActionButton : true},
     { icon: 'zoomOut', CommandName:COMMANDS.ZOOMOUT , isActionButton : true},
@@ -27,8 +26,8 @@ function App() {
   return (
     <>
       <DrawingBoard/>
-      <Toolbar items={items}/>
-      <Toolbar direction="vertical" theme={"dark"}items={zoomPanitems}/>
+      <Toolbar items={items} theme={"dark"}/>
+      <Toolbar direction="vertical" theme={"dark"} items={zoomPanitems}/>
       <PorpertiesToolBar/>
     
     </>

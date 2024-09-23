@@ -3,7 +3,8 @@ const ENTITYTYPE ={
     LINE :"LINE",
     RECTANGLE:"RECTANGLE",
     ELLIPSE:"ELLIPSE",
-    TEXT:"TEXT"
+    TEXT:"TEXT",
+    PATH:"PATH"
 }
 
 export default ENTITYTYPE;
