@@ -1,0 +1,13 @@
+.propertiesToolbarContainer{
+    @apply flex flex-col absolute gap-4 justify-center items-center border rounded-3xl p-3 left-2 top-1/2 -translate-y-1/2 opacity-80;
+}
+
+.propertiesToolbarContainerLight{
+    border-color: theme('colors.border');
+    background-color: theme('colors.background');
+ }
+ 
+ .propertiesToolbarContainerDark{
+     border-color: theme('colors.borderDark');
+     background-color: theme('colors.backgroundDark');
+  }
