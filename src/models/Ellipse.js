@@ -1,4 +1,4 @@
-import Entity from "./entity";
+import Entity from "./Entity";
 import ENTITYTYPE from './EnittyType';
 
 class Ellipse extends Entity {

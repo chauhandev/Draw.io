@@ -1,5 +1,5 @@
 import Matrix from "../utility/Matrix";
-import Entity from "./entity";
+import Entity from "./Entity";
 import ENTITYTYPE from './EnittyType';
 
 class Line extends Entity {
